@@ -1,6 +1,14 @@
+import "@mui/material";
 import type { Theme } from "@mui/material/styles/createTheme";
-import { createTheme as createMuiTheme, responsiveFontSizes, } from "@mui/material/styles";
+import {
+  createTheme as createMuiTheme,
+  responsiveFontSizes,
+} from "@mui/material/styles";
+
 import { createOptions as createBaseOptions } from "./base/create-options";
+import { createOptions as createDarkOptions } from "./dark/create-options";
+import { createOptions as createLightOptions } from "./light/create-options";
+import type { ThemeConfig } from "../types";
 
 declare module "@mui/material/styles" {
   interface BreakpointOverrides {
@@ -13,6 +21,7 @@ declare module "@mui/material/styles" {
     xxl: true;
   }
 }
+
 declare module "@mui/material/styles/createPalette" {
   interface ColorRange {
     50: string;
@@ -51,25 +60,28 @@ declare module "@mui/material/styles/createPalette" {
   }
 }
 
-export const createTheme = (): Theme => {
+export const createTheme = (config: ThemeConfig): Theme => {
   let theme = createMuiTheme(
     // Base options available for both dark and light palette modes
-    createBaseOptions(),
+    createBaseOptions(
+      // direction: config.direction,
+      // disableButtonsOnLoginAs: config?.disableButtonsOnLoginAs,
+    ),
     // Options based on selected palette mode, color preset and contrast
-    //   config.paletteMode === "dark"
-    //     ? createDarkOptions({
-    //       colorPreset: config.colorPreset,
-    //       contrast: config.contrast,
-    //     })
-    //     : createLightOptions({
-    //       colorPreset: config.colorPreset,
-    //       contrast: config.contrast,
-    //     })
-    // );
+    config.paletteMode === "dark"
+      ? createDarkOptions({
+        colorPreset: config.colorPreset,
+        contrast: config.contrast,
+      })
+      : createLightOptions({
+        colorPreset: config.colorPreset,
+        contrast: config.contrast,
+      })
+  );
 
-    // if (config.responsiveFontSizes) {
-    //   theme = responsiveFontSizes(theme);
-    // }
-  )
+  if (config.responsiveFontSizes) {
+    theme = responsiveFontSizes(theme);
+  }
+
   return theme;
 };

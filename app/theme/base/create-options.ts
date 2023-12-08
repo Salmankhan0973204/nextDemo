@@ -1,16 +1,7 @@
 import type { ThemeOptions } from "@mui/material/styles/createTheme";
 import { createTypography } from "./create-typography";
 import { neutral } from '../colors'
-
-interface ExtendedBreakpoints {
-  xxs: number;
-  xs: number;
-  sm: number;
-  md: number;
-  lg: number;
-  xl: number;
-  xxl: number;
-}
+import { createComponents } from "./create-components";
 
 export const createOptions = (): ThemeOptions => {
   return {
@@ -24,13 +15,12 @@ export const createOptions = (): ThemeOptions => {
         lg: 1200,
         xl: 1440,
         xxl: 1760,
-      } as ExtendedBreakpoints,
+      }
     },
     palette: {
       neutral
-
     },
-
+    components: createComponents({}),
     shape: {
       borderRadius: 8,
     },
